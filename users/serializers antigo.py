@@ -3,27 +3,22 @@ from rest_framework.validators import UniqueValidator
 from .models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     username = serializers.CharField(
         validators=[
             UniqueValidator(
                 queryset=User.objects.all(),
                 message="A user with that username already exists.",
             )
-        ]
+        ],
     )
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=User.objects.all())]
+        validators=[UniqueValidator(queryset=User.objects.all())],
     )
-
-    class Meta:
-        model = User
-        fields = ["id", "username", "email", "password", "full_name", "artistic_name"]
-        extra_kwargs = {
-            "id": {"read_only": True},
-            "password": {"write_only": True},
-            "full_name": {"required": False},
-        }
+    password = serializers.CharField(write_only=True)
+    full_name = serializers.CharField(max_length=50, required=False)
+    artistic_name = serializers.CharField(max_length=50)
 
     def create(self, validated_data: dict) -> User:
         return User.objects.create_user(**validated_data)

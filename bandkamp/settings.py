@@ -155,7 +155,6 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Descrição do Projeto',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-# OTHER SETTINGS
 }
 
 # Internationalization
